@@ -74,8 +74,8 @@ public final class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private void update(double dt) {
         elapsedSeconds += dt;
-        camera.update(input, dt);
-        world.update(elapsedSeconds);
+        world.update(input, camera, dt, elapsedSeconds);
+        camera.update(input, world.getPlayer(), dt);
 
         if (input.isDown(KeyEvent.VK_ESCAPE)) {
             stop();
@@ -84,6 +84,8 @@ public final class GamePanel extends JPanel implements Runnable, KeyListener {
                 window.dispose();
             }
         }
+
+        input.endFrame();
     }
 
     private void renderFrame() {
@@ -109,9 +111,45 @@ public final class GamePanel extends JPanel implements Runnable, KeyListener {
             if (frame != null) {
                 g2.drawImage(frame, 0, 0, getWidth(), getHeight(), null);
             }
+            drawHud(g2);
         } finally {
             g2.dispose();
         }
+    }
+
+    private void drawHud(Graphics2D g2) {
+        int scale = SCALE;
+        int hearts = world.getPlayer().getMaxHealth();
+        int health = world.getPlayer().getHealth();
+        for (int i = 0; i < hearts; i++) {
+            int x = 10 + i * 17;
+            int y = 10;
+            Color color = i < health ? new Color(218, 42, 54) : new Color(76, 39, 52);
+            g2.setColor(new Color(38, 18, 24));
+            g2.fillOval(x * scale - 1, y * scale - 1, 8 * scale + 2, 8 * scale + 2);
+            g2.fillOval((x + 6) * scale - 1, y * scale - 1, 8 * scale + 2, 8 * scale + 2);
+            g2.fillPolygon(
+                    new int[]{(x - 1) * scale, (x + 15) * scale, (x + 7) * scale},
+                    new int[]{(y + 5) * scale, (y + 5) * scale, (y + 16) * scale},
+                    3
+            );
+            g2.setColor(color);
+            g2.fillOval(x * scale, y * scale, 8 * scale, 8 * scale);
+            g2.fillOval((x + 6) * scale, y * scale, 8 * scale, 8 * scale);
+            g2.fillPolygon(
+                    new int[]{x * scale, (x + 14) * scale, (x + 7) * scale},
+                    new int[]{(y + 5) * scale, (y + 5) * scale, (y + 15) * scale},
+                    3
+            );
+        }
+
+        g2.setColor(new Color(24, 31, 46));
+        g2.fillOval((VIEW_WIDTH - 54) * scale, 10 * scale, 36 * scale, 36 * scale);
+        g2.setColor(new Color(86, 109, 148));
+        g2.drawOval((VIEW_WIDTH - 54) * scale, 10 * scale, 36 * scale, 36 * scale);
+        g2.setColor(new Color(210, 218, 228));
+        g2.fillRect((VIEW_WIDTH - 38) * scale, 18 * scale, 3 * scale, 20 * scale);
+        g2.fillRect((VIEW_WIDTH - 45) * scale, 25 * scale, 17 * scale, 3 * scale);
     }
 
     @Override

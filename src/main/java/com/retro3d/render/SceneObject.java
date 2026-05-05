@@ -6,6 +6,7 @@ public final class SceneObject {
     private final Mesh mesh;
     private Vec3 position;
     private double rotationY;
+    private boolean visible = true;
 
     public SceneObject(Mesh mesh, Vec3 position) {
         this.mesh = mesh;
@@ -30,5 +31,13 @@ public final class SceneObject {
 
     public void setRotationY(double rotationY) {
         this.rotationY = rotationY;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

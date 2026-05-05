@@ -5,49 +5,25 @@ import com.retro3d.math.Vec3;
 import java.awt.event.KeyEvent;
 
 public final class Camera {
-    private Vec3 position = new Vec3(0.0, 1.25, -7.0);
+    private Vec3 position = new Vec3(0.0, 2.2, -5.2);
     private double yaw;
-    private double pitch;
+    private double pitch = 0.03;
 
-    public void update(Input input, double dt) {
-        double speed = input.isDown(KeyEvent.VK_SHIFT) ? 6.0 : 3.0;
-        double move = speed * dt;
-        double turn = 1.9 * dt;
+    public void update(Input input, Player player, double dt) {
         double look = 1.2 * dt;
 
-        if (input.isDown(KeyEvent.VK_LEFT)) {
-            yaw -= turn;
-        }
-        if (input.isDown(KeyEvent.VK_RIGHT)) {
-            yaw += turn;
-        }
         if (input.isDown(KeyEvent.VK_UP)) {
-            pitch = Math.max(-0.7, pitch - look);
+            pitch = Math.max(-0.35, pitch - look);
         }
         if (input.isDown(KeyEvent.VK_DOWN)) {
-            pitch = Math.min(0.55, pitch + look);
+            pitch = Math.min(0.28, pitch + look);
         }
 
-        Vec3 forward = new Vec3(Math.sin(yaw), 0.0, Math.cos(yaw));
-        Vec3 right = new Vec3(Math.cos(yaw), 0.0, -Math.sin(yaw));
-        Vec3 velocity = Vec3.ZERO;
-
-        if (input.isDown(KeyEvent.VK_W)) {
-            velocity = velocity.add(forward);
-        }
-        if (input.isDown(KeyEvent.VK_S)) {
-            velocity = velocity.subtract(forward);
-        }
-        if (input.isDown(KeyEvent.VK_D) || input.isDown(KeyEvent.VK_E)) {
-            velocity = velocity.add(right);
-        }
-        if (input.isDown(KeyEvent.VK_A) || input.isDown(KeyEvent.VK_Q)) {
-            velocity = velocity.subtract(right);
-        }
-
-        if (velocity.lengthSquared() > 0.001) {
-            position = position.add(velocity.normalized().scale(move));
-        }
+        Vec3 target = player.getPosition().add(new Vec3(0.0, 1.05, 0.0));
+        double playerYaw = player.getYaw();
+        Vec3 offset = new Vec3(-Math.sin(playerYaw) * 5.2, 1.75, -Math.cos(playerYaw) * 5.2);
+        position = target.add(offset);
+        yaw = playerYaw;
     }
 
     public Vec3 getPosition() {

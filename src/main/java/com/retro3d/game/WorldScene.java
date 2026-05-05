@@ -11,30 +11,56 @@ import java.util.List;
 
 public final class WorldScene {
     private final List<SceneObject> objects = new ArrayList<SceneObject>();
-    private final SceneObject playerMarker;
+    private final List<Collider> colliders = new ArrayList<Collider>();
+    private final Player player = new Player();
+    private double elapsedSeconds;
 
     public WorldScene() {
-        objects.add(new SceneObject(Mesh.makeGround(42.0, new Color(73, 108, 64)), new Vec3(0.0, -0.05, 8.0)));
-        objects.add(new SceneObject(Mesh.makeGrid(42.0, 6, new Color(32, 46, 45)), new Vec3(0.0, 0.0, 8.0)));
+        objects.add(new SceneObject(Mesh.makeGround(36.0, new Color(56, 101, 58)), new Vec3(0.0, -0.05, 2.0)));
+        objects.add(new SceneObject(Mesh.makeForestMist(new Color(154, 166, 198)), new Vec3(0.0, 0.02, 7.0)));
 
-        objects.add(new SceneObject(Mesh.makeTempleBlock(new Color(151, 110, 78)), new Vec3(-3.2, 0.0, 8.2)));
-        objects.add(new SceneObject(Mesh.makeTempleBlock(new Color(115, 126, 152)), new Vec3(3.0, 0.0, 11.0)));
-        objects.add(new SceneObject(Mesh.makePyramid(new Color(172, 91, 72)), new Vec3(0.0, 0.0, 15.0)));
+        addTree(-5.5, -4.0, 1.0);
+        addTree(-2.2, -6.8, 0.9);
+        addTree(3.4, -5.7, 1.1);
+        addTree(6.8, -2.5, 0.95);
+        addTree(-7.5, 1.8, 1.15);
+        addTree(-3.8, 4.8, 0.85);
+        addTree(2.3, 5.5, 1.0);
+        addTree(7.0, 4.0, 1.2);
+        addTree(-8.5, 10.0, 0.9);
+        addTree(-1.0, 11.8, 1.1);
+        addTree(5.8, 10.6, 0.95);
 
-        for (int i = -3; i <= 3; i++) {
-            objects.add(new SceneObject(Mesh.makeCrystal(new Color(70, 150, 175)), new Vec3(i * 2.2, 0.0, 20.0 + Math.abs(i))));
-        }
+        objects.add(new SceneObject(Mesh.makeTempleBlock(new Color(120, 104, 88)), new Vec3(-9.5, 0.0, 14.0)));
+        objects.add(new SceneObject(Mesh.makeCrystal(new Color(122, 186, 214)), new Vec3(9.3, 0.0, 13.0)));
 
-        playerMarker = new SceneObject(Mesh.makeShip(new Color(224, 188, 82)), new Vec3(0.0, 1.0, 9.0));
-        objects.add(playerMarker);
+        objects.add(player.getBody());
+        objects.add(player.getSword());
     }
 
-    public void update(double timeSeconds) {
-        playerMarker.setRotationY(timeSeconds * 1.4);
-        playerMarker.setPosition(new Vec3(Math.sin(timeSeconds) * 1.4, 1.15 + Math.sin(timeSeconds * 2.0) * 0.15, 9.0));
+    public void update(Input input, Camera camera, double dt, double timeSeconds) {
+        elapsedSeconds = timeSeconds;
+        player.update(input, camera, this, dt, timeSeconds);
+    }
+
+    private void addTree(double x, double z, double scale) {
+        objects.add(new SceneObject(Mesh.makeTree(scale), new Vec3(x, 0.0, z)));
+        colliders.add(new Collider(new Vec3(x, 0.0, z), 0.42 * scale));
     }
 
     public List<SceneObject> getObjects() {
         return Collections.unmodifiableList(objects);
+    }
+
+    public List<Collider> getColliders() {
+        return Collections.unmodifiableList(colliders);
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public double getElapsedSeconds() {
+        return elapsedSeconds;
     }
 }

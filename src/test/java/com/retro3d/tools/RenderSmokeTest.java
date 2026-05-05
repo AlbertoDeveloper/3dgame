@@ -16,7 +16,11 @@ public final class RenderSmokeTest {
 
     public static void main(String[] args) throws Exception {
         Renderer renderer = new Renderer(320, 240);
-        BufferedImage image = renderer.render(new WorldScene(), new Camera(), 1.0);
+        WorldScene world = new WorldScene();
+        Camera camera = new Camera();
+        world.update(new com.retro3d.game.Input(), camera, 1.0 / 60.0, 1.0);
+        camera.update(new com.retro3d.game.Input(), world.getPlayer(), 1.0 / 60.0);
+        BufferedImage image = renderer.render(world, camera, 1.0);
         Set<Integer> colors = new HashSet<Integer>();
 
         for (int y = 0; y < image.getHeight(); y += 4) {

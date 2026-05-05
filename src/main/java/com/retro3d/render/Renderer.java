@@ -35,6 +35,9 @@ public final class Renderer {
         List<SceneObject> objects = world.getObjects();
         for (int i = 0; i < objects.size(); i++) {
             SceneObject object = objects.get(i);
+            if (!object.isVisible()) {
+                continue;
+            }
             List<Triangle> triangles = object.getMesh().getTriangles();
             for (int t = 0; t < triangles.size(); t++) {
                 drawTriangle(object, triangles.get(t), camera, timeSeconds);
@@ -89,7 +92,8 @@ public final class Renderer {
             return;
         }
 
-        Color lit = applyLighting(triangle.color, normal);
+        double fog = Math.max(0.0, Math.min(1.0, ((ca.z + cb.z + cc.z) / 3.0 - 8.0) / 18.0));
+        Color lit = mix(applyLighting(triangle.color, normal), new Color(146, 154, 186), fog);
         rasterize(a, b, c, lit.getRGB());
     }
 
