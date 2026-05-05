@@ -21,7 +21,7 @@ That script compiles the app into `build/classes` and starts the prototype.
 
 ## Controls
 
-- `WASD` - move the character
+- `WASD` - move and face the character in that direction
 - `Arrow Left` / `Arrow Right` - turn the character and follow camera
 - `Arrow Up` / `Arrow Down` - look up/down
 - `Space` / `Ctrl` - sword attack

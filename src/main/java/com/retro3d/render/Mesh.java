@@ -127,30 +127,54 @@ public final class Mesh {
 
     public static Mesh makeHero() {
         List<Triangle> tris = new ArrayList<Triangle>();
-        Color tunic = new Color(50, 146, 53);
-        Color skin = new Color(220, 165, 98);
-        Color boots = new Color(103, 64, 43);
-        Color shield = new Color(38, 71, 164);
-        Color hair = new Color(222, 178, 50);
+        Color tunic = new Color(42, 151, 48);
+        Color tunicDark = new Color(28, 99, 39);
+        Color skin = new Color(222, 172, 98);
+        Color boots = new Color(108, 55, 35);
+        Color glove = new Color(132, 72, 39);
+        Color shieldBlue = new Color(31, 76, 174);
+        Color shieldRim = new Color(178, 190, 202);
+        Color crest = new Color(233, 210, 71);
+        Color hair = new Color(220, 132, 35);
 
-        addBox(tris, new Vec3(0.0, 0.75, 0.0), 0.58, 0.85, 0.35, tunic);
-        addBox(tris, new Vec3(0.0, 1.35, 0.0), 0.38, 0.34, 0.34, skin);
-        addPyramid(tris, new Vec3(0.0, 1.66, -0.07), 0.65, 0.55, tunic.brighter());
-        addBox(tris, new Vec3(-0.23, 0.18, 0.0), 0.18, 0.42, 0.2, boots);
-        addBox(tris, new Vec3(0.23, 0.18, 0.0), 0.18, 0.42, 0.2, boots);
-        addBox(tris, new Vec3(-0.42, 0.78, 0.0), 0.16, 0.56, 0.16, skin.darker());
-        addBox(tris, new Vec3(0.42, 0.78, 0.0), 0.16, 0.56, 0.16, skin.darker());
-        addBox(tris, new Vec3(0.0, 1.47, -0.13), 0.48, 0.18, 0.12, hair);
-        addBox(tris, new Vec3(-0.02, 0.82, -0.28), 0.58, 0.62, 0.08, shield);
-        addBox(tris, new Vec3(-0.02, 0.82, -0.335), 0.36, 0.44, 0.04, new Color(210, 214, 224));
+        addBox(tris, new Vec3(0.0, 0.82, 0.02), 0.48, 0.72, 0.32, tunic);
+        addPyramid(tris, new Vec3(0.0, 0.48, 0.03), 0.72, 0.42, tunicDark);
+        addBox(tris, new Vec3(0.0, 1.17, 0.0), 0.56, 0.16, 0.36, tunic.brighter());
+
+        addBox(tris, new Vec3(-0.2, 0.25, 0.0), 0.17, 0.5, 0.18, boots);
+        addBox(tris, new Vec3(0.2, 0.25, 0.0), 0.17, 0.5, 0.18, boots);
+        addBox(tris, new Vec3(-0.2, 0.54, 0.02), 0.15, 0.28, 0.15, new Color(222, 104, 48));
+        addBox(tris, new Vec3(0.2, 0.54, 0.02), 0.15, 0.28, 0.15, new Color(222, 104, 48));
+
+        addBox(tris, new Vec3(-0.42, 0.85, 0.02), 0.14, 0.48, 0.14, glove);
+        addBox(tris, new Vec3(0.43, 0.83, 0.12), 0.14, 0.46, 0.14, glove);
+        addBox(tris, new Vec3(0.47, 0.82, 0.36), 0.13, 0.15, 0.18, skin);
+
+        addBox(tris, new Vec3(0.0, 1.42, 0.04), 0.38, 0.38, 0.34, skin);
+        addBox(tris, new Vec3(-0.31, 1.42, 0.02), 0.12, 0.14, 0.08, skin);
+        addBox(tris, new Vec3(0.31, 1.42, 0.02), 0.12, 0.14, 0.08, skin);
+        addBox(tris, new Vec3(0.0, 1.57, 0.12), 0.44, 0.12, 0.16, hair);
+        addBox(tris, new Vec3(-0.21, 1.39, 0.16), 0.12, 0.34, 0.14, hair);
+        addBox(tris, new Vec3(0.21, 1.39, 0.16), 0.12, 0.34, 0.14, hair);
+        addBox(tris, new Vec3(0.0, 1.37, 0.245), 0.08, 0.05, 0.035, new Color(82, 45, 34));
+
+        addPyramid(tris, new Vec3(0.0, 1.78, -0.12), 0.54, 0.52, tunic);
+        addBox(tris, new Vec3(0.0, 1.62, -0.28), 0.32, 0.18, 0.34, tunicDark);
+
+        addBox(tris, new Vec3(0.0, 0.92, -0.29), 0.72, 0.78, 0.08, shieldRim);
+        addBox(tris, new Vec3(0.0, 0.92, -0.34), 0.56, 0.62, 0.05, shieldBlue);
+        addBox(tris, new Vec3(0.0, 1.03, -0.375), 0.28, 0.1, 0.035, crest);
+        addBox(tris, new Vec3(-0.1, 0.88, -0.375), 0.12, 0.22, 0.035, crest);
+        addBox(tris, new Vec3(0.1, 0.88, -0.375), 0.12, 0.22, 0.035, crest);
         return new Mesh(tris);
     }
 
     public static Mesh makeSword(Color color) {
         List<Triangle> tris = new ArrayList<Triangle>();
-        addBox(tris, new Vec3(0.0, 0.0, 0.55), 0.08, 0.08, 1.15, color);
-        addBox(tris, new Vec3(0.0, 0.0, -0.08), 0.52, 0.1, 0.1, new Color(108, 78, 41));
-        addBox(tris, new Vec3(0.0, -0.02, -0.28), 0.14, 0.16, 0.28, new Color(86, 54, 32));
+        addBox(tris, new Vec3(0.0, 0.0, 0.58), 0.065, 0.07, 1.18, color);
+        addPyramid(tris, new Vec3(0.0, 0.0, 1.24), 0.12, 0.24, color.brighter());
+        addBox(tris, new Vec3(0.0, 0.0, -0.08), 0.5, 0.1, 0.1, new Color(118, 75, 37));
+        addBox(tris, new Vec3(0.0, -0.02, -0.28), 0.13, 0.15, 0.3, new Color(80, 49, 31));
         return new Mesh(tris);
     }
 

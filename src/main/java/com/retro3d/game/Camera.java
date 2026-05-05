@@ -20,10 +20,8 @@ public final class Camera {
         }
 
         Vec3 target = player.getPosition().add(new Vec3(0.0, 1.05, 0.0));
-        double playerYaw = player.getYaw();
-        Vec3 offset = new Vec3(-Math.sin(playerYaw) * 5.2, 1.75, -Math.cos(playerYaw) * 5.2);
+        Vec3 offset = new Vec3(-Math.sin(yaw) * 5.2, 1.75, -Math.cos(yaw) * 5.2);
         position = target.add(offset);
-        yaw = playerYaw;
     }
 
     public Vec3 getPosition() {

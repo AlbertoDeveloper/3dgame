@@ -34,10 +34,11 @@ public final class Player {
             yaw += turnSpeed;
         }
 
-        Vec3 move = movementFromInput(input);
+        Vec3 move = movementFromInput(input, camera.getYaw());
         double speed = input.isDown(KeyEvent.VK_SHIFT) ? 4.4 : 2.7;
 
         if (move.lengthSquared() > 0.001) {
+            yaw = Math.atan2(move.x, move.z);
             moveWithCollisions(move.normalized().scale(speed * dt), world);
         }
 
@@ -59,9 +60,9 @@ public final class Player {
         syncObjects(elapsedSeconds);
     }
 
-    private Vec3 movementFromInput(Input input) {
-        Vec3 forward = new Vec3(Math.sin(yaw), 0.0, Math.cos(yaw));
-        Vec3 right = new Vec3(Math.cos(yaw), 0.0, -Math.sin(yaw));
+    private Vec3 movementFromInput(Input input, double cameraYaw) {
+        Vec3 forward = new Vec3(Math.sin(cameraYaw), 0.0, Math.cos(cameraYaw));
+        Vec3 right = new Vec3(Math.cos(cameraYaw), 0.0, -Math.sin(cameraYaw));
         Vec3 move = Vec3.ZERO;
 
         if (input.isDown(KeyEvent.VK_W)) {
@@ -112,16 +113,18 @@ public final class Player {
 
         if (attackTimer > 0.0) {
             double t = 1.0 - attackTimer / ATTACK_SECONDS;
-            double arc = -0.95 + t * 1.9;
+            double arc = -1.1 + t * 2.2;
             Vec3 forward = new Vec3(Math.sin(yaw + arc), 0.0, Math.cos(yaw + arc));
-            Vec3 hand = position.add(forward.scale(0.58));
-            sword.setPosition(new Vec3(hand.x, 0.78 + bob, hand.z));
+            Vec3 hand = position.add(forward.scale(0.72));
+            sword.setPosition(new Vec3(hand.x, 0.88 + bob, hand.z));
             sword.setRotationY(yaw + arc);
             sword.setVisible(true);
         } else {
-            Vec3 side = new Vec3(Math.sin(yaw + 0.65), 0.0, Math.cos(yaw + 0.65));
-            sword.setPosition(position.add(side.scale(0.36)).add(new Vec3(0.0, 0.75 + bob, 0.0)));
-            sword.setRotationY(yaw + 0.15);
+            Vec3 forward = new Vec3(Math.sin(yaw), 0.0, Math.cos(yaw));
+            Vec3 right = new Vec3(Math.cos(yaw), 0.0, -Math.sin(yaw));
+            Vec3 hand = position.add(forward.scale(0.42)).add(right.scale(0.44));
+            sword.setPosition(new Vec3(hand.x, 0.86 + bob, hand.z));
+            sword.setRotationY(yaw);
             sword.setVisible(true);
         }
     }
